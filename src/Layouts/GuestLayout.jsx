@@ -1,21 +1,26 @@
-import { Outlet } from 'react-router-dom';
-import { Navigate } from 'react-router-dom';
+import { Outlet, Navigate } from 'react-router-dom';
 import { useStateContext } from "../Contexts/ContextProvider.jsx";
+import '../Styles/guestLayout.css';
 
-export default function GuestLayoutLayout() {
-    const { token } = useStateContext();
-    if (token) {
-        return <Navigate to="/dashboard" replace />;
-    }
-    
-    return (
-        <div className="guest-layout">
-            <header>
-                <h1>Welcome to the Admin Dashboard</h1>
-            </header>
-            <main>
-            <Outlet />
-            </main>
-        </div>
-    )
-};
+export default function GuestLayout() {
+  const { token } = useStateContext();
+
+  if (token) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  return (
+    <div className="guest-layout">
+      <header className="guest-header">
+        <h1>👋 Welcome</h1>
+        <p>Please log in or sign up to continue</p>
+      </header>
+      <main className="guest-main">
+        <Outlet />
+      </main>
+      <footer className="guest-footer">
+        <p>&copy; {new Date().getFullYear()} Admin Dashboard</p>
+      </footer>
+    </div>
+  );
+}
