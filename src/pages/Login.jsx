@@ -1,23 +1,47 @@
-import { Link } from 'react-router-dom';
+import { useState } from "react";
 
+const Login = () => {
 
-export default function Login() {
-    return (
-        <div className="login-page">
-            <h2>Login</h2>
-            <form>
-                <div className="form-group">
-                    <label htmlFor="email">Email:</label>
-                    <input type="email" id="email" name="email" required />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="password">Password:</label>
-                    <input type="password" id="password" name="password" required />
-                </div>
-                <button type="submit">Login</button>
-            </form>
-            <p>Don't have an account? <Link to="/signup" >Signup</Link></p>
-            <p><a href="/forgot-password">Forgot Password?</a></p>
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  return (
+    <div className="login-page">
+      <form className="login-form" onSubmit="">
+        <h2>Login</h2>
+
+       <p className="error"></p>
+
+        <div>
+          <label>Email</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="you@example.com"
+            required
+          />
         </div>
-    );
-}
+
+        <div>
+          <label>Password</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="••••••••"
+            required
+          />
+        </div>
+
+        <button type="submit">Login</button>
+
+        <p className="register-link">
+          Don’t have an account? <a href="/signup">Sign up</a>
+        </p>
+      </form>
+    </div>
+  );
+};
+
+export default Login;
