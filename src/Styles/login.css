@@ -1,84 +1,88 @@
-.login-container {
+.auth-container {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(to right, #f9f9f9, #d0e2ff);
-    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to right, #667eea, #764ba2);
   }
   
-  .login-box {
-    background-color: white;
-    padding: 2.5rem 2rem;
-    border-radius: 12px;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  .auth-form {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 400px;
   }
   
-  .login-box h2 {
+  .auth-title {
     text-align: center;
     margin-bottom: 1.5rem;
-    color: #2c3e50;
+    font-size: 1.75rem;
+    color: #333;
   }
   
-  .input-group {
-    margin-bottom: 1rem;
+  .auth-input-group {
+    margin-bottom: 1.2rem;
   }
   
-  .input-group label {
+  .auth-input-group label {
     display: block;
-    margin-bottom: 0.4rem;
-    font-weight: 600;
-    color: #34495e;
+    margin-bottom: 0.5rem;
+    color: #555;
   }
   
-  .input-group input {
+  .auth-input-group input {
     width: 100%;
-    padding: 0.7rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
     font-size: 1rem;
+    outline: none;
   }
   
-  .login-btn {
+  .auth-input-group input:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.3);
+  }
+  
+  .auth-btn {
     width: 100%;
     padding: 0.8rem;
-    margin-top: 1rem;
-    background-color: #2980b9;
+    background-color: #667eea;
     color: white;
     border: none;
-    border-radius: 6px;
+    border-radius: 0.5rem;
     font-size: 1rem;
     cursor: pointer;
-    transition: background 0.3s ease;
+    transition: background-color 0.3s ease;
   }
   
-  .login-btn:hover {
-    background-color: #1f5e8c;
+  .auth-btn:hover {
+    background-color: #5a67d8;
   }
   
-  .error-msg {
-    background-color: #ffe6e6;
-    color: #d60000;
-    padding: 0.8rem;
-    border-radius: 6px;
+  .auth-error {
+    background: #ffe4e6;
+    color: #c53030;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
     margin-bottom: 1rem;
-    text-align: center;
-  }
-  
-  .redirect-text {
-    margin-top: 1rem;
-    text-align: center;
     font-size: 0.9rem;
   }
   
-  .redirect-text a {
-    color: #2980b9;
+  .auth-redirect {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .auth-redirect a {
+    color: #667eea;
     text-decoration: none;
   }
   
-  .redirect-text a:hover {
+  .auth-redirect a:hover {
     text-decoration: underline;
   }
   

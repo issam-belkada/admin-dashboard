@@ -27,8 +27,8 @@ export default function Signup() {
 
     axiosClient
       .post("/signup", formData)
-        .then(({ data }) => {
-            localStorage.setItem("ACCESS-TOKEN", data.token);
+      .then(({ data }) => {
+        localStorage.setItem("ACCESS-TOKEN", data.token);
         localStorage.setItem("USER", JSON.stringify(data.user));
         setUser(data.user);
         setToken(data.token);
@@ -42,24 +42,24 @@ export default function Signup() {
   };
 
   return (
-    <div className="signup-container">
-      <form className="signup-box" onSubmit={handleSubmit}>
-        <h2>📝 Sign Up</h2>
+    <div className="auth-container">
+      <form className="auth-form" onSubmit={handleSubmit}>
+        <h2 className="auth-title">📝 Create Account</h2>
 
         {Object.keys(errors).length > 0 && (
-          <div className="error-msg">
+          <div className="auth-error">
             {Object.entries(errors).map(([key, messages]) => (
-              <p key={key}>{messages[0]}</p>
+              <p key={key}>⚠️ {messages[0]}</p>
             ))}
           </div>
         )}
 
-        <div className="input-group">
+        <div className="auth-input-group">
           <label htmlFor="name">Full Name</label>
           <input
-            type="text"
             id="name"
             name="name"
+            type="text"
             value={formData.name}
             onChange={handleChange}
             placeholder="John Doe"
@@ -67,12 +67,12 @@ export default function Signup() {
           />
         </div>
 
-        <div className="input-group">
+        <div className="auth-input-group">
           <label htmlFor="email">Email</label>
           <input
-            type="email"
             id="email"
             name="email"
+            type="email"
             value={formData.email}
             onChange={handleChange}
             placeholder="you@example.com"
@@ -80,12 +80,12 @@ export default function Signup() {
           />
         </div>
 
-        <div className="input-group">
+        <div className="auth-input-group">
           <label htmlFor="password">Password</label>
           <input
-            type="password"
             id="password"
             name="password"
+            type="password"
             value={formData.password}
             onChange={handleChange}
             placeholder="••••••••"
@@ -93,12 +93,12 @@ export default function Signup() {
           />
         </div>
 
-        <div className="input-group">
+        <div className="auth-input-group">
           <label htmlFor="password_confirmation">Confirm Password</label>
           <input
-            type="password"
             id="password_confirmation"
             name="password_confirmation"
+            type="password"
             value={formData.password_confirmation}
             onChange={handleChange}
             placeholder="••••••••"
@@ -106,11 +106,11 @@ export default function Signup() {
           />
         </div>
 
-        <button className="signup-btn" type="submit">
-          Create Account
+        <button className="auth-btn" type="submit">
+          Sign Up
         </button>
 
-        <p className="redirect-text">
+        <p className="auth-redirect">
           Already have an account? <Link to="/login">Login</Link>
         </p>
       </form>

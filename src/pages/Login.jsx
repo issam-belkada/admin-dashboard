@@ -18,7 +18,7 @@ const Login = () => {
     axiosClient
       .post("/login", { email, password })
       .then(({ data }) => {
-          localStorage.setItem("ACCESS-TOKEN", data.token);
+        localStorage.setItem("ACCESS-TOKEN", data.token);
         localStorage.setItem("USER", JSON.stringify(data.user));
         setToken(data.token);
         setUser(data.user);
@@ -34,13 +34,16 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
-      <form className="login-box" onSubmit={handleSubmit}>
-        <h2>🔐 Login</h2>
-        {error && <p className="error-msg">{error}</p>}
-        <div className="input-group">
-          <label>Email</label>
+    <div className="auth-container">
+      <form className="auth-form" onSubmit={handleSubmit}>
+        <h2 className="auth-title">🔐 Sign In</h2>
+
+        {error && <p className="auth-error">⚠️ {error}</p>}
+
+        <div className="auth-input-group">
+          <label htmlFor="email">Email</label>
           <input
+            id="email"
             type="email"
             placeholder="you@example.com"
             value={email}
@@ -48,9 +51,11 @@ const Login = () => {
             required
           />
         </div>
-        <div className="input-group">
-          <label>Password</label>
+
+        <div className="auth-input-group">
+          <label htmlFor="password">Password</label>
           <input
+            id="password"
             type="password"
             placeholder="••••••••"
             value={password}
@@ -58,9 +63,11 @@ const Login = () => {
             required
           />
         </div>
-        <button className="login-btn" type="submit">Login</button>
-        <p className="redirect-text">
-          Don’t have an account? <Link to="/signup">Sign up</Link>
+
+        <button className="auth-btn" type="submit">Login</button>
+
+        <p className="auth-redirect">
+          Don’t have an account? <Link to="/signup">Create one</Link>
         </p>
       </form>
     </div>

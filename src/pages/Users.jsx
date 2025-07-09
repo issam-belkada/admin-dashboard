@@ -1,26 +1,46 @@
 import React, { useEffect, useState } from "react";
 import axiosClient from "../axios-client";
-import "../Styles/Users.css";
 import { Link } from "react-router-dom";
+import "../Styles/Users.css";
 
 export default function Users() {
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
     getUsers();
+    // Check for saved theme preference
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      setDarkMode(true);
+    }
   }, []);
 
+  useEffect(() => {
+    // Apply dark mode class to body
+    if (darkMode) {
+      document.body.classList.add("dark-mode");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.body.classList.remove("dark-mode");
+      localStorage.setItem("theme", "light");
+    }
+  }, [darkMode]);
+
   const getUsers = () => {
-    setLoading(true);
     axiosClient
       .get("/users")
       .then(({ data }) => {
-        setUsers(data.data || data);
+        const usersData = data.data || data;
+        setUsers(usersData);
+        setFilteredUsers(usersData);
         setLoading(false);
       })
       .catch((error) => {
-        console.error("❌ Error fetching users:", error);
+        console.error("Error fetching users:", error);
         setLoading(false);
       });
   };
@@ -31,43 +51,82 @@ export default function Users() {
     axiosClient
       .delete(`/users/${id}`)
       .then(() => {
-        setUsers(users.filter((user) => user.id !== id));
+        setUsers((prev) => prev.filter((user) => user.id !== id));
+        setFilteredUsers((prev) => prev.filter((user) => user.id !== id));
       })
       .catch((error) => {
-        console.error("❌ Error deleting user:", error);
+        console.error("Error deleting user:", error);
       });
   };
 
+  const handleSearch = (e) => {
+    const term = e.target.value.toLowerCase();
+    setSearchTerm(term);
+    
+    if (term === "") {
+      setFilteredUsers(users);
+    } else {
+      const filtered = users.filter(
+        (user) =>
+          user.name.toLowerCase().includes(term) ||
+          user.email.toLowerCase().includes(term)
+      );
+      setFilteredUsers(filtered);
+    }
+  };
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
+
   return (
-    <div className="users-container">
+    <div className={`users-wrapper ${darkMode ? "dark-mode" : ""}`}>
       <div className="users-header">
-        <h2>👥 Users List</h2>
-        <Link to="/users/create" className="create-button">
-          ➕ Create New User
-        </Link>
+        <div className="header-left">
+          <h1>👥 User Management</h1>
+        </div>
+        <div className="header-right">
+          <input
+            type="text"
+            placeholder="Search users..."
+            value={searchTerm}
+            onChange={handleSearch}
+            className="search-input"
+          />
+          <Link to="/users/create" className="btn-primary">
+            + Add New User
+          </Link>
+        </div>
       </div>
 
       {loading ? (
-        <div className="loader">Loading...</div>
-      ) : users.length > 0 ? (
-        <div className="users-grid">
-          {users.map((user) => (
+        <div className="loader-wrapper">
+          <div className="loader" />
+          <p>Loading users...</p>
+        </div>
+      ) : filteredUsers.length ? (
+        <div className="user-cards">
+          {filteredUsers.map((user) => (
             <div className="user-card" key={user.id}>
-              <div className="user-info">
-                <h3>{user.name}</h3>
+              <div className="user-avatar">{user.name[0].toUpperCase()}</div>
+              <div className="user-details">
+                <h2>{user.name}</h2>
                 <p>{user.email}</p>
-                <p className="created-at">
-                  Created on: {new Date(user.created_at).toLocaleDateString()}
-                </p>
+                <small>
+                  Created: {new Date(user.created_at).toLocaleDateString()}
+                </small>
               </div>
               <div className="user-actions">
-                <Link to={`/users/${user.id}`} className="btn show">
-                  Show
+                <Link to={`/users/${user.id}`} className="btn btn-view">
+                  View
                 </Link>
-                <Link to={`/users/${user.id}/edit`} className="btn edit">
+                <Link to={`/users/${user.id}/edit`} className="btn btn-edit">
                   Edit
                 </Link>
-                <button onClick={() => handleDelete(user.id)} className="btn delete">
+                <button
+                  onClick={() => handleDelete(user.id)}
+                  className="btn btn-delete"
+                >
                   Delete
                 </button>
               </div>
@@ -75,7 +134,9 @@ export default function Users() {
           ))}
         </div>
       ) : (
-        <p className="no-users">No users found.</p>
+        <p className="no-users">
+          {searchTerm ? "No matching users found." : "No users found."}
+        </p>
       )}
     </div>
   );
