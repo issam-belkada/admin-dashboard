@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Outlet, Navigate, Link } from "react-router-dom";
 import { useStateContext } from "../Contexts/ContextProvider";
 import "../Styles/defaultlayout.css";
+import axiosClient from "../axios-client";
 
 export default function DefaultLayout() {
   const { user, token, setUser, setToken } = useStateContext();
@@ -12,10 +13,21 @@ export default function DefaultLayout() {
   }
 
   const handleLogout = () => {
-    localStorage.removeItem("ACCESS-TOKEN");
-    setUser(null);
-    setToken(null);
+    axiosClient.post("/logout")
+      .then(() => {
+        localStorage.removeItem("ACCESS-TOKEN");
+        localStorage.removeItem("USER");
+        setUser(null);
+        setToken(null);
+      })
+      .catch((error) => {
+        console.error("❌ Logout failed:", error);
+      });
+    
   };
+
+  const username = user?.name ?? "Guest";
+
 
   return (
     <div id="defaultLayout">
@@ -30,7 +42,7 @@ export default function DefaultLayout() {
       <div className="content">
         <header className="header">
           <div className="welcome-message">
-            <h1>Welcome, {user?.name} 👋</h1>
+          <h1>Welcome,{username} 👋</h1>
           </div>
 
           <div className="user-menu">
@@ -38,7 +50,8 @@ export default function DefaultLayout() {
               className="user-trigger"
               onClick={() => setDropdownOpen(!dropdownOpen)}
             >
-              <span>{user?.name}</span> ⏷
+            
+            <span>{username}</span> ⏷
             </div>
 
             {dropdownOpen && (

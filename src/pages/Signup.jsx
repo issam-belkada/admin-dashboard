@@ -27,8 +27,9 @@ export default function Signup() {
 
     axiosClient
       .post("/signup", formData)
-      .then(({ data }) => {
-        console.log("✅ Signup success:", data);
+        .then(({ data }) => {
+            localStorage.setItem("ACCESS-TOKEN", data.token);
+        localStorage.setItem("USER", JSON.stringify(data.user));
         setUser(data.user);
         setToken(data.token);
       })

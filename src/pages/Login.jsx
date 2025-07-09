@@ -18,7 +18,8 @@ const Login = () => {
     axiosClient
       .post("/login", { email, password })
       .then(({ data }) => {
-        localStorage.setItem("ACCESS-TOKEN", data.token);
+          localStorage.setItem("ACCESS-TOKEN", data.token);
+        localStorage.setItem("USER", JSON.stringify(data.user));
         setToken(data.token);
         setUser(data.user);
       })
