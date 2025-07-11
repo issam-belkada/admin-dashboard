@@ -5,78 +5,48 @@ import "../Styles/Users.css";
 
 export default function Users() {
   const [users, setUsers] = useState([]);
-  const [filteredUsers, setFilteredUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [darkMode, setDarkMode] = useState(false);
+  const [meta, setMeta] = useState({});
+  const [links, setLinks] = useState([]);
 
+  // Fetch on load and on searchTerm change
   useEffect(() => {
-    getUsers();
-    // Check for saved theme preference
+    fetchUsers();
     const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "dark") {
-      setDarkMode(true);
-    }
+    if (savedTheme === "dark") setDarkMode(true);
   }, []);
 
+  // Debounced search
   useEffect(() => {
-    // Apply dark mode class to body
-    if (darkMode) {
-      document.body.classList.add("dark-mode");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.body.classList.remove("dark-mode");
-      localStorage.setItem("theme", "light");
-    }
-  }, [darkMode]);
+    const delayDebounce = setTimeout(() => {
+      fetchUsers(`/users?search=${encodeURIComponent(searchTerm)}`);
+    }, 400);
+    return () => clearTimeout(delayDebounce);
+  }, [searchTerm]);
 
-  const getUsers = () => {
+  const fetchUsers = (url = "/users") => {
+    setLoading(true);
     axiosClient
-      .get("/users")
+      .get(url)
       .then(({ data }) => {
-        const usersData = data.data || data;
-        setUsers(usersData);
-        setFilteredUsers(usersData);
+        setUsers(data.data);
+        setMeta(data.meta);
+        setLinks(data.meta?.links || []);
         setLoading(false);
       })
-      .catch((error) => {
-        console.error("Error fetching users:", error);
+      .catch((err) => {
+        console.error("Error fetching users:", err);
         setLoading(false);
       });
   };
 
   const handleDelete = (id) => {
-    if (!window.confirm("Are you sure you want to delete this user?")) return;
-
-    axiosClient
-      .delete(`/users/${id}`)
-      .then(() => {
-        setUsers((prev) => prev.filter((user) => user.id !== id));
-        setFilteredUsers((prev) => prev.filter((user) => user.id !== id));
-      })
-      .catch((error) => {
-        console.error("Error deleting user:", error);
-      });
-  };
-
-  const handleSearch = (e) => {
-    const term = e.target.value.toLowerCase();
-    setSearchTerm(term);
-    
-    if (term === "") {
-      setFilteredUsers(users);
-    } else {
-      const filtered = users.filter(
-        (user) =>
-          user.name.toLowerCase().includes(term) ||
-          user.email.toLowerCase().includes(term)
-      );
-      setFilteredUsers(filtered);
-    }
-  };
-
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
+    if (!window.confirm("Are you sure?")) return;
+    axiosClient.delete(`/users/${id}`).then(() => {
+      fetchUsers(`/users?page=${meta.current_page}&search=${encodeURIComponent(searchTerm)}`);
+    });
   };
 
   return (
@@ -84,16 +54,17 @@ export default function Users() {
       <div className="users-header">
         <div className="header-left">
           <h1>👥 User Management</h1>
+          <p>Total: {meta.total ?? "..."}</p>
         </div>
         <div className="header-right">
           <input
             type="text"
             placeholder="Search users..."
             value={searchTerm}
-            onChange={handleSearch}
+            onChange={(e) => setSearchTerm(e.target.value)}
             className="search-input"
           />
-          <Link to="/users/create" className="btn-primary">
+          <Link to="/users/new" className="btn-primary">
             + Add New User
           </Link>
         </div>
@@ -101,42 +72,49 @@ export default function Users() {
 
       {loading ? (
         <div className="loader-wrapper">
-          <div className="loader" />
-          <p>Loading users...</p>
+          <div className="loader" /> Loading...
         </div>
-      ) : filteredUsers.length ? (
-        <div className="user-cards">
-          {filteredUsers.map((user) => (
-            <div className="user-card" key={user.id}>
-              <div className="user-avatar">{user.name[0].toUpperCase()}</div>
-              <div className="user-details">
-                <h2>{user.name}</h2>
-                <p>{user.email}</p>
-                <small>
-                  Created: {new Date(user.created_at).toLocaleDateString()}
-                </small>
+      ) : users.length ? (
+        <>
+          <div className="user-cards">
+            {users.map((user) => (
+              <div className="user-card" key={user.id}>
+                <div className="user-avatar">{user.name[0]}</div>
+                <div className="user-details">
+                  <h2>{user.name}</h2>
+                  <p>{user.email}</p>
+                  <small>
+                    Created: {new Date(user.created_at).toLocaleDateString()}
+                  </small>
+                </div>
+                <div className="user-actions">
+                  <Link to={`/users/${user.id}`} className="btn btn-view">View</Link>
+                  <Link to={`/users/${user.id}/edit`} className="btn btn-edit">Edit</Link>
+                  <button onClick={() => handleDelete(user.id)} className="btn btn-delete">Delete</button>
+                </div>
               </div>
-              <div className="user-actions">
-                <Link to={`/users/${user.id}`} className="btn btn-view">
-                  View
-                </Link>
-                <Link to={`/users/${user.id}/edit`} className="btn btn-edit">
-                  Edit
-                </Link>
+            ))}
+          </div>
+
+          <div className="pagination">
+            {links.map((link, index) =>
+              link.url ? (
                 <button
-                  onClick={() => handleDelete(user.id)}
-                  className="btn btn-delete"
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
+                  key={index}
+                  className={`page-btn ${link.active ? "active" : ""}`}
+                  dangerouslySetInnerHTML={{ __html: link.label }}
+                  onClick={() =>
+                    fetchUsers(
+                      link.url.replace("http://localhost:8000/api", "")
+                    )
+                  }
+                />
+              ) : null
+            )}
+          </div>
+        </>
       ) : (
-        <p className="no-users">
-          {searchTerm ? "No matching users found." : "No users found."}
-        </p>
+        <p className="no-users">No users found.</p>
       )}
     </div>
   );
