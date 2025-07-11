@@ -7,6 +7,9 @@ import Signup from "./pages/Signup";
 import Users from "./pages/Users";
 import NotFound from "./pages/NotFound";
 import Userform from "./pages/Userform";
+import ShowUser from "./pages/ShowUser";
+import ProfilePage from "./pages/ProfilePage";
+import Settings from "./pages/Settings";
 
 const router = createBrowserRouter([
     {
@@ -16,7 +19,7 @@ const router = createBrowserRouter([
         
             {
                 path: "/",
-                element: <Navigate to="/users" />
+                element: <Navigate to="/dashboard" />
             },
             {
                 path: "dashboard",
@@ -27,10 +30,21 @@ const router = createBrowserRouter([
                 element: <Users/>
             },
             {
+                path: "/profile",
+                element: <ProfilePage/>
+            },
+            {
+                path: "/Settings",
+                element: <Settings/>
+            },
+            {
                 path: "/users/new",
                 element: <Userform key="usercreate"/>
             },
-            
+            {
+                path: "/users/:id",
+                element: <ShowUser/>
+            },
             {
                 path: "/users/:id/edit",
                 element: <Userform key="userupdate"/>

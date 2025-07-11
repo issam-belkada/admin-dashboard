@@ -1,0 +1,247 @@
+/* Modern Layout Styles */
+.user-profile-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  
+  /* Header Styles */
+  .profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  
+  .profile-header h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #2d3748;
+  }
+  
+  .profile-icon {
+    font-size: 1.5rem;
+  }
+  
+  /* Profile Card */
+  .profile-card {
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+  }
+  
+  .profile-section {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2rem;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  
+  .user-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 600;
+    color: white;
+    flex-shrink: 0;
+  }
+  
+  .user-info h2 {
+    font-size: 1.5rem;
+    margin: 0 0 0.25rem 0;
+    color: #1e293b;
+  }
+  
+  .user-email {
+    color: #64748b;
+    margin: 0;
+    font-size: 1rem;
+  }
+  
+  /* Profile Details */
+  .profile-details {
+    padding: 1.5rem 2rem;
+    display: grid;
+    gap: 1.25rem;
+  }
+  
+  .detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  
+  .detail-item:last-child {
+    border-bottom: none;
+  }
+  
+  .detail-label {
+    font-size: 0.9rem;
+    color: #64748b;
+    font-weight: 500;
+  }
+  
+  .detail-value {
+    font-weight: 500;
+    color: #1e293b;
+  }
+  
+  /* Buttons */
+  .modern-btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .edit-btn {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+  }
+  
+  .edit-btn:hover {
+    background-color: #2563eb;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+  }
+  
+  .back-btn {
+    background-color: white;
+    color: #3b82f6;
+    border: 1px solid #e2e8f0;
+  }
+  
+  .back-btn:hover {
+    background-color: #f8fafc;
+    border-color: #bfdbfe;
+  }
+  
+  .profile-footer {
+    padding: 1.5rem 2rem;
+    border-top: 1px solid #f1f5f9;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  /* Loading State */
+  .user-profile-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 60vh;
+    gap: 1.5rem;
+  }
+  
+  .loading-animation {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .loading-circle {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #3b82f6;
+    animation: bounce 1.4s infinite ease-in-out;
+  }
+  
+  .loading-circle:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  
+  .loading-circle:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+  
+  @keyframes bounce {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1); }
+  }
+  
+  /* Error State */
+  .user-profile-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 60vh;
+    text-align: center;
+    gap: 1rem;
+    padding: 0 1.5rem;
+  }
+  
+  .error-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #ef4444;
+  }
+  
+  .user-profile-error h3 {
+    font-size: 1.5rem;
+    margin: 0;
+    color: #1e293b;
+  }
+  
+  .user-profile-error p {
+    color: #64748b;
+    margin: 0 0 1.5rem 0;
+    max-width: 400px;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .profile-section {
+      flex-direction: column;
+      text-align: center;
+      padding: 1.5rem;
+    }
+  
+    .profile-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+  
+    .header-actions {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .user-profile-container {
+      padding: 0 1rem;
+    }
+  
+    .profile-details {
+      padding: 1rem;
+    }
+  
+    .detail-item {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.25rem;
+    }
+  }

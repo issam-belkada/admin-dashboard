@@ -59,10 +59,6 @@ export default function DefaultLayout() {
             <span className="nav-icon">👥</span>
             <span className="nav-text">User Management</span>
           </Link>
-          <Link to="/settings" className="nav-link">
-            <span className="nav-icon">⚙️</span>
-            <span className="nav-text">Settings</span>
-          </Link>
         </nav>
         
         <div className="sidebar-footer">
@@ -94,10 +90,10 @@ export default function DefaultLayout() {
 
                 {dropdownOpen && (
                   <div className="dropdown-menu">
-                    <Link to="/profile" className="dropdown-item">
+                    <Link to="/profile" className="dropdown-item" onClick={() => setDropdownOpen(false)}>
                       <span className="item-icon">👤</span> Profile Settings
                     </Link>
-                    <button onClick={handleLogout} className="dropdown-item">
+                    <button onClick={handleLogout} className="dropdown-item" >
                       <span className="item-icon">🚪</span> Logout
                     </button>
                   </div>
@@ -119,9 +115,9 @@ export default function DefaultLayout() {
             <span className="version"> v2.1.0</span>
           </p>
           <div className="footer-links">
-            <Link to="/privacy">Privacy Policy</Link>
-            <Link to="/terms">Terms of Service</Link>
-            <Link to="/contact">Contact</Link>
+            <Link to="mailto:belkadaissam@gmail.com">Privacy Policy</Link>
+            <Link to="mailto:belkadaissam@gmail.com">Terms of Service</Link>
+            <Link to="mailto:belkadaissam@gmail.com">Contact</Link>
           </div>
         </footer>
       </div>

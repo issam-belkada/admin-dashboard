@@ -1,0 +1,49 @@
+.not-found-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 50vh;
+    text-align: center;
+    background: #f7f9fc;
+    padding: 20px;
+  }
+  
+  .not-found-page h1 {
+    font-size: 120px;
+    margin-bottom: 0.5rem;
+    color: #1e88e5;
+    animation: popIn 0.4s ease;
+  }
+  
+  .not-found-page p {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 2rem;
+  }
+  
+  .not-found-btn {
+    text-decoration: none;
+    background-color: #1e88e5;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  .not-found-btn:hover {
+    background-color: #1565c0;
+  }
+  
+  @keyframes popIn {
+    from {
+      transform: scale(0.7);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
