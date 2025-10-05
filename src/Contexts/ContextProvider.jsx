@@ -5,12 +5,21 @@ const StateContext = createContext({
   user: null,
   setUser: () => {},
   token: null,
-  setToken: () => {},
+  setToken: () => { },
+  darkMode: false,
+  setDarkMode: () => {},
 });
 
 export const ContextProvider = ({ children }) => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("USER")) || null);
   const [token, _setToken] = useState(localStorage.getItem("ACCESS-TOKEN"));
+  const [darkMode, setDarkMode] = useState(
+    localStorage.getItem('darkMode') === 'true');
+
+  useEffect(() => {
+  document.body.className = darkMode ? 'dark-theme' : 'light-theme';
+  localStorage.setItem('darkMode', darkMode);
+}, [darkMode]);
 
     const setToken = (token) => {
     _setToken(token);
@@ -31,8 +40,10 @@ export const ContextProvider = ({ children }) => {
         user,
         setUser,
         token,
-        setToken
-      }), [user, token]);
+        setToken,
+        darkMode,
+        setDarkMode,
+      }), [user, token, darkMode]);
     
     return (
     <StateContext.Provider value={contextValue}>

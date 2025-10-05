@@ -12,6 +12,14 @@
     background-color: #121212;
     color: #f0f0f0;
   }
+  .username {
+  color: #000; /* light mode (default) */
+}
+
+.dark-mode .username {
+  color: #fff; /* dark mode text */
+}
+
   
   /* Header */
   .users-header {

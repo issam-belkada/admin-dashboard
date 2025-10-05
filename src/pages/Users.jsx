@@ -2,21 +2,18 @@ import React, { useEffect, useState } from "react";
 import axiosClient from "../axios-client";
 import { Link } from "react-router-dom";
 import "../Styles/Users.css";
+import { useStateContext } from "../Contexts/ContextProvider";
 
 export default function Users() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [darkMode, setDarkMode] = useState(false);
+  const { darkMode } = useStateContext();
+
   const [meta, setMeta] = useState({});
   const [links, setLinks] = useState([]);
 
-  // Fetch on load and on searchTerm change
-  useEffect(() => {
-    fetchUsers();
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "dark") setDarkMode(true);
-  }, []);
+
 
   // Debounced search
   useEffect(() => {
@@ -81,7 +78,9 @@ export default function Users() {
               <div className="user-card" key={user.id}>
                 <div className="user-avatar">{user.name[0]}</div>
                 <div className="user-details">
-                  <h2>{user.name}</h2>
+                  <h2 className="username">
+                  {user.name}
+                  </h2>
                   <p>{user.email}</p>
                   <small>
                     Created: {new Date(user.created_at).toLocaleDateString()}

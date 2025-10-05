@@ -5,16 +5,21 @@ import axiosClient from "../axios-client";
 import "../Styles/defaultlayout.css";
 
 export default function DefaultLayout() {
-  const { user, token, setUser, setToken } = useStateContext();
+  const { user, token, setUser, setToken, darkMode, setDarkMode } = useStateContext();
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem('darkMode') === 'true';
-  });
+
+
 
   useEffect(() => {
-    document.body.className = darkMode ? 'dark-theme' : 'light-theme';
-    localStorage.setItem('darkMode', darkMode);
-  }, [darkMode]);
+  const handleClickOutside = (e) => {
+    if (!e.target.closest(".user-menu-container")) {
+      setDropdownOpen(false);
+    }
+  };
+  document.addEventListener("click", handleClickOutside);
+  return () => document.removeEventListener("click", handleClickOutside);
+}, []);
+
 
   if (!token) {
     return <Navigate to="/login" replace />;

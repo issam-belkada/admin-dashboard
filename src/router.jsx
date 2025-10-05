@@ -9,7 +9,6 @@ import NotFound from "./pages/NotFound";
 import Userform from "./pages/Userform";
 import ShowUser from "./pages/ShowUser";
 import ProfilePage from "./pages/ProfilePage";
-import Settings from "./pages/Settings";
 
 const router = createBrowserRouter([
     {
@@ -32,10 +31,6 @@ const router = createBrowserRouter([
             {
                 path: "/profile",
                 element: <ProfilePage/>
-            },
-            {
-                path: "/Settings",
-                element: <Settings/>
             },
             {
                 path: "/users/new",
